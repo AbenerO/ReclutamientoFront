@@ -1,0 +1,11 @@
+// Write your overrides
+
+// ── VTable: padding consistente en todas las densidades ─────────────────────
+// Vuetify compact reduce demasiado el padding; lo normalizamos globalmente.
+.v-table {
+  th,
+  td {
+    padding-block: 10px !important;
+    padding-inline: 16px !important;
+  }
+}

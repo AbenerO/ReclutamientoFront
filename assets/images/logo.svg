@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 200 200" fill="none">
+
+  <!-- 1. HOJA (detrás de la cruz, lado izquierdo) -->
+  <path d="
+    M12 48
+    C2 72, 0 104, 8 136
+    C15 162, 33 178, 58 184
+    L58 198 L128 198 L128 156
+    C110 152, 92 140, 78 122
+    C62 102, 60 80, 68 62
+    C72 50, 55 42, 12 48Z
+  " fill="#78C84A"/>
+
+  <!-- Venas blancas de la hoja -->
+  <path d="M12 48 Q44 114 58 192"    stroke="white" stroke-width="2.5" fill="none" opacity="0.7"  stroke-linecap="round"/>
+  <path d="M14 66 Q30 78 36 98"      stroke="white" stroke-width="2"   fill="none" opacity="0.55" stroke-linecap="round"/>
+  <path d="M4 90 Q22 102 32 124"     stroke="white" stroke-width="2"   fill="none" opacity="0.55" stroke-linecap="round"/>
+  <path d="M5 122 Q22 130 32 152"    stroke="white" stroke-width="2"   fill="none" opacity="0.55" stroke-linecap="round"/>
+  <path d="M8 152 Q24 156 34 172"    stroke="white" stroke-width="2"   fill="none" opacity="0.5"  stroke-linecap="round"/>
+
+  <!-- 2. CRUZ verde oscura (encima de la hoja) -->
+  <rect x="70" y="8"  width="60" height="184" rx="16" fill="#006B28"/>
+  <rect x="8"  y="70" width="184" height="60" rx="16" fill="#006B28"/>
+
+  <!-- 3. TALLO U-rectangular (encima de la cruz, base) -->
+  <path d="M58 184 L58 198 L128 198 L128 156 L112 156 L112 182 L74 182 L74 156 L58 156 Z"
+        fill="#50CC28"/>
+
+  <!-- 4. ESTETOSCOPIO blanco (encima de todo) -->
+
+  <!-- Loop oval central -->
+  <ellipse cx="98" cy="96" rx="26" ry="30"
+           stroke="white" stroke-width="6.5" fill="none"/>
+
+  <!-- Auricular izquierdo + bolita -->
+  <line x1="80" y1="70" x2="70" y2="46"
+        stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="68" cy="43" r="6" fill="white"/>
+
+  <!-- Auricular derecho + bolita -->
+  <line x1="116" y1="70" x2="126" y2="46"
+        stroke="white" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="128" cy="43" r="6" fill="white"/>
+
+  <!-- Conexión loop → cabezal -->
+  <line x1="124" y1="96" x2="150" y2="88"
+        stroke="white" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Cabezal / membrana -->
+  <circle cx="156" cy="86" r="13" stroke="white" stroke-width="5.5" fill="none"/>
+  <circle cx="156" cy="86" r="5"  fill="white"/>
+
+</svg>

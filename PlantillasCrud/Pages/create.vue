@@ -1,0 +1,84 @@
+<script setup lang="ts">
+
+// definePageMeta({
+//   middleware: 'permissions',
+//   action: 'crear {{ modelPlural }}',
+//   subject: '{{ model }}',
+// });
+
+import fields from '@/views/pages/{{ modelPlural }}/fields.vue'
+
+import type { {{ model }}Interface } from '@/types/{{ modelPlural }}/index.ts';
+
+import {ref} from "vue";
+
+const { post  } = useClienteRequest();
+
+const { showToastSuccess, showToastError } = useToast();
+
+const requestInProgress = ref(false) // Evitar solicitudes concurrentes
+const { paginaEspera } = useCargandoPagina();
+
+const guardar{{ model }} = async ( {{ model }}: {{ model }}Interface ): Promise<void> => {
+
+  if (!requestInProgress.value) {
+
+    requestInProgress.value = true // Establecer bandera de solicitud en progreso
+    paginaEspera.value = true // Activar indicador de carga
+
+    try {
+
+      const respuesta: { message: string } = await post('{{ url }}', {{ model }} );
+
+      showToastSuccess(respuesta.message);
+
+      navigateTo('/{{ directory }}');
+
+    } catch (error: any) {
+
+      showToastError(error.message);
+
+    }  finally {
+
+      paginaEspera.value = false // Desactivar indicador de carga
+      requestInProgress.value = false // Liberar la bandera
+
+    }
+  }
+
+}
+
+</script>
+
+<template>
+
+  <div class="d-flex flex-wrap justify-end justify-sm-space-between gap-y-4 gap-x-6 mb-6">
+    <h1 v-text="'Crear {{ model }}'"/>
+    <VBtn
+      class="ml-auto"
+      color="secondary"
+      to="/{{ directory }}/"
+    >
+      <VIcon class="mr-2 ri-contract-left-fill"/>
+      Regresar
+    </VBtn>
+
+  </div>
+
+  <VCard>
+
+    <VCardText>
+
+      <fields :fields="fields"
+              @emitirDatos="guardar{{ model }}"
+      />
+
+    </VCardText>
+
+  </VCard>
+
+</template>
+
+<style scoped lang="scss">
+
+</style>
