@@ -1,35 +1,46 @@
-# vue
+# SysBase — Frontend (Nuxt 3)
 
-This template should help get you started developing with Vue 3 in Vite.
+Panel de administración en Nuxt 3 + Vue 3 + Vuetify (plantilla Materialize). Se conecta al backend
+Laravel (`ReclutamientoBack`) con autenticación por cookie usando `nuxt-auth-sanctum`.
+Es una SPA (`ssr: false`).
 
-## Recommended IDE Setup
+## Requisitos
 
-[VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur).
+- Node.js 18+ y npm
+- El backend corriendo en `http://localhost:8000` (ver el README del backend)
 
-## Type Support for `.vue` Imports in TS
-
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates.
-
-However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can run `Volar: Switch TS Plugin on/off` from VS Code command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+## Puesta en marcha
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
+cp .env.example .env
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+La app queda en `http://localhost:3000`. Usuario inicial: `admin` / `12345`.
 
-```sh
-npm run build
-```
+## Variables `.env`
+
+| Variable | Valor local | Para qué |
+|---|---|---|
+| `NUXT_PUBLIC_API_BASE_URL` | `http://localhost:8000` | URL del backend. **Solo el host, sin `/api`**: las llamadas ya incluyen el prefijo (`api/user`, `api/login`, ...) y el endpoint CSRF es `/sanctum/csrf-cookie` |
+| `NUXT_DEV_HOST` | `localhost` | Host del servidor de desarrollo (puerto 3000) |
+| `NUXT_PUBLIC_EMPRESA_NOMBRE` | `SysBase` | Nombre en encabezados, impresiones y PDFs |
+| `NUXT_PUBLIC_EMPRESA_COLOR` / `_COLOR_CLARO` | `#666CFF` / `#F0F0FF` | Colores de marca |
+| `NUXT_PUBLIC_EMPRESA_LOGO` | `/logo.svg` | Logo |
+
+Nuxt lee el `.env` solo al arrancar: después de cambiarlo, reiniciar `npm run dev`.
+
+## Conexión con el backend
+
+- El front usa cookies de sesión (Sanctum, modo `cookie`). El origen del front debe estar en
+  `FRONTEND_URL` y `SANCTUM_STATEFUL_DOMAINS` del `.env` del backend (`localhost:3000`).
+- Para llamar a la API usar `useSanctumClient()`: `client('api/perfil')`.
+
+## Scripts
+
+| Comando | Qué hace |
+|---|---|
+| `npm run dev` | Servidor de desarrollo con recarga en caliente |
+| `npm run build` | Compilación de producción |
+| `npm run generarCrudV3` | Genera un CRUD en el front para un módulo creado con `php artisan make:api` en el backend |
