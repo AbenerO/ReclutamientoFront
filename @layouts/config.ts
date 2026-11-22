@@ -3,7 +3,7 @@ import type { LayoutConfig } from '@layouts/types'
 
 export const layoutConfig: LayoutConfig = {
   app: {
-    title: 'SysBase',
+    title: 'Reclutamiento',
     logo: h('img', {
       src: '/logo.svg',
       style: 'height:36px; width:36px; object-fit:contain; flex-shrink:0;',

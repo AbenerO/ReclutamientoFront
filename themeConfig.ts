@@ -8,7 +8,7 @@ import { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from '@layo
 
 export const { themeConfig, layoutConfig } = defineThemeConfig({
   app: {
-    title: 'SysBase',
+    title: 'Reclutamiento',
 
     logo: h('img', {
       src: '/logo.svg',

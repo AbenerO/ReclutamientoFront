@@ -8,8 +8,8 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      titleTemplate: '%s | SysBase',
-      title: 'SysBase',
+      titleTemplate: '%s | Reclutamiento',
+      title: 'Reclutamiento',
 
       meta: [{
         name: 'viewport',
@@ -96,7 +96,7 @@ export default defineNuxtConfig({
 
       // Datos de la empresa (encabezados, impresiones, PDFs). Sobrescribir con NUXT_PUBLIC_EMPRESA_*
       empresa: {
-        nombre: 'SysBase',
+        nombre: 'Reclutamiento',
         direccion: '',
         telefono: '',
         color: '#666CFF',

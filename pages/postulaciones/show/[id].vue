@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { can } from '@layouts/plugins/casl'
+import Lista from '@/views/pages/entrevistas/lista.vue'
 import type { PostulacionInterface } from '@/types/postulaciones/index'
 
 definePageMeta({
@@ -44,6 +46,10 @@ const getPostulacion = async () => {
 
 const puedeMostrarDatos = computed(() => {
   return Object.values(item.value).some(valor => valor !== null && valor !== undefined)
+})
+
+const postulacionCerrada = computed(() => {
+  return ['Contratado', 'Rechazado'].includes(item.value.estado_postulacion?.nombre)
 })
 
 getPostulacion()
@@ -115,4 +121,10 @@ getPostulacion()
       </VList>
     </VCardText>
   </VCard>
+
+  <Lista
+    v-if="can('ver entrevistas', 'Entrevista')"
+    :postulacion-id="Number(id)"
+    :bloqueada="postulacionCerrada"
+  />
 </template>

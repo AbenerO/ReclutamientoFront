@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import { useGenerateImageVariant } from '@/@core/composable/useGenerateImageVariant'
-import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
-import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
-import authV2LoginIllustrationDark from '@images/pages/auth-v2-login-illustration-dark.png'
-import authV2LoginIllustrationLight from '@images/pages/auth-v2-login-illustration-light.png'
-import authV2LoginMaskDark from '@images/pages/auth-v2-login-mask-dark.png'
-import authV2LoginMaskLight from '@images/pages/auth-v2-login-mask-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
@@ -31,11 +24,12 @@ const isLoading = ref(false)
 // Mensajes del servidor en español
 const mensajeDeError = (e: any): string => {
   // ofetch lanza FetchError: el cuerpo de la respuesta está en e.data o e.response._data
-  const serverMsg: string | undefined =
-    e?.data?.message ?? e?.response?._data?.message
+  const serverMsg: string | undefined
+    = e?.data?.message ?? e?.response?._data?.message
 
   if (serverMsg) {
     const lower = serverMsg.toLowerCase()
+
     // Claves de traducción de Laravel (cuando no hay lang/es configurado)
     if (lower === 'auth.failed' || lower.includes('credentials') || lower.includes('credencial'))
       return 'Las credenciales ingresadas no son correctas.'
@@ -43,6 +37,7 @@ const mensajeDeError = (e: any): string => {
       return 'Demasiados intentos. Espera un momento antes de volver a intentarlo.'
     if (lower.includes('inactive') || lower.includes('inactiv'))
       return 'Tu cuenta está inactiva. Contacta al administrador.'
+
     // Devolver el mensaje original si no hay traducción
     return serverMsg
   }
@@ -74,144 +69,109 @@ const onSubmit = async (): Promise<void> => {
 }
 
 const isPasswordVisible = ref(false)
-const authV2LoginMask = useGenerateImageVariant(authV2LoginMaskLight, authV2LoginMaskDark)
-const authV2LoginIllustration = useGenerateImageVariant (authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 </script>
 
 <template>
-  <a href="javascript:void(0)">
-    <div class="app-logo auth-logo">
-      <VNodeRenderer :nodes="themeConfig.app.logo" />
-      <h1 class="app-logo-title">
-        {{ themeConfig.app.title }}
-      </h1>
-    </div>
-  </a>
-
-  <VRow
-    no-gutters
-    class="auth-wrapper"
-  >
-    <VCol
-      md="8"
-      class="d-none d-md-flex align-center justify-center position-relative"
-    >
-      <div class="d-flex align-center justify-center pa-10">
-        <img
-          :src="authV2LoginIllustration"
-          class="auth-illustration w-100"
-          alt="auth-illustration"
-        >
-      </div>
-      <VImg
-        :src="authV2LoginMask"
-        class="d-none d-md-flex auth-footer-mask"
-        alt="auth-mask"
-      />
-    </VCol>
-    <VCol
-      cols="12"
-      md="4"
-      class="auth-card-v2 d-flex align-center justify-center"
-      style="background-color: rgb(var(--v-theme-surface));"
-    >
+  <div class="login-fondo d-flex align-center justify-center pa-4">
+    <!-- Tema oscuro solo para la tarjeta, así el texto y los campos se ven claros sobre el fondo de color -->
+    <VThemeProvider theme="dark">
       <VCard
-        flat
-        :max-width="500"
-        class="mt-12 mt-sm-0 pa-5 pa-lg-7"
+        width="100%"
+        :max-width="440"
+        class="login-card pa-4 pa-sm-6"
+        elevation="0"
       >
-        <VCardText>
-          <h4 class="text-h4 mb-1 text-center">
-            <span class="text-capitalize">{{ themeConfig.app.title }}! 👋🏻</span>
+      <VCardText class="text-center">
+        <div class="d-flex align-center justify-center gap-x-3 mb-4">
+          <VNodeRenderer :nodes="themeConfig.app.logo" />
+          <h4 class="text-h4">
+            {{ themeConfig.app.title }}
           </h4>
+        </div>
 
-          <p class="mb-0 text-center">
-            Inicia sesión en tu cuenta
-          </p>
-        </VCardText>
+        <h5 class="text-h5 mb-1">
+          Sistema de Reclutamiento y Selección de Personal
+        </h5>
+        <p class="mb-0">
+          Inicia sesión para continuar
+        </p>
+      </VCardText>
 
-        <VCardText>
-          <VForm @submit.prevent="onSubmit">
-            <VRow>
-              <!-- Error alert -->
-              <VCol
-                v-if="error"
-                cols="12"
+      <VCardText>
+        <VForm @submit.prevent="onSubmit">
+          <VRow>
+            <VCol
+              v-if="error"
+              cols="12"
+            >
+              <VAlert
+                type="error"
+                variant="tonal"
+                closable
+                @click:close="error = null"
               >
-                <VAlert
-                  type="error"
-                  variant="tonal"
-                  closable
-                  @click:close="error = null"
-                >
-                  {{ error }}
-                </VAlert>
-              </VCol>
+                {{ error }}
+              </VAlert>
+            </VCol>
 
-              <!-- username -->
-              <VCol cols="12">
-                <VTextField
-                  v-model="form.email"
-                  autofocus
-                  label="Nombre de usuario"
-                  placeholder="admin"
-                  prepend-inner-icon="ri-at-line"
-                  autocomplete="username"
-                />
-              </VCol>
+            <VCol cols="12">
+              <VTextField
+                v-model="form.email"
+                autofocus
+                label="Nombre de usuario"
+                prepend-inner-icon="ri-at-line"
+                autocomplete="username"
+              />
+            </VCol>
 
-              <!-- password -->
-              <VCol cols="12">
-                <VTextField
-                  v-model="form.password"
-                  class="mb-4"
-                  label="Contraseña"
-                  placeholder="············"
-                  :type="isPasswordVisible ? 'text' : 'password'"
-                  autocomplete="password"
-                  :append-inner-icon="isPasswordVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
-                  @click:append-inner="isPasswordVisible = !isPasswordVisible"
-                />
+            <VCol cols="12">
+              <VTextField
+                v-model="form.password"
+                label="Contraseña"
+                prepend-inner-icon="ri-lock-line"
+                :type="isPasswordVisible ? 'text' : 'password'"
+                autocomplete="current-password"
+                :append-inner-icon="isPasswordVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
+                @click:append-inner="isPasswordVisible = !isPasswordVisible"
+              />
+            </VCol>
 
-                <!-- login button -->
-                <VBtn
-                  block
-                  type="submit"
-                  :loading="isLoading"
-                  :disabled="isLoading"
-                >
-                  Iniciar Sesión
-                </VBtn>
-              </VCol>
-
-              <!-- create account -->
-              <VCol
-                cols="12"
-                class="text-body-1 text-center"
+            <VCol cols="12">
+              <VBtn
+                block
+                type="submit"
+                :loading="isLoading"
+                :disabled="isLoading"
               >
-                <span class="d-inline-block">
-                  Ingresa correctamente tus credenciales
-                </span>
-              </VCol>
-
-              <VCol
-                cols="12"
-                class="d-flex align-center"
-              >
-                <VDivider />
-                <span class="mx-4 text-high-emphasis">-</span>
-                <VDivider />
-              </VCol>
-
-
-            </VRow>
-          </VForm>
-        </VCardText>
+                Iniciar Sesión
+              </VBtn>
+            </VCol>
+          </VRow>
+        </VForm>
+      </VCardText>
       </VCard>
-    </VCol>
-  </VRow>
+    </VThemeProvider>
+  </div>
 </template>
 
-<style lang="scss">
-@use "@core/scss/template/pages/page-auth";
+<style scoped>
+.login-fondo {
+  min-block-size: 100vh;
+  /* Base de color sólido (sin blanco) y encima manchas de luz */
+  background-color: #0f766e;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.75) 0, transparent 50%), /* azul cielo */
+    radial-gradient(circle at 85% 15%, rgba(20, 184, 166, 0.6) 0, transparent 45%), /* verde azulado */
+    radial-gradient(circle at 80% 85%, rgba(16, 185, 129, 0.6) 0, transparent 50%), /* verde esmeralda */
+    radial-gradient(circle at 10% 90%, rgba(6, 182, 212, 0.55) 0, transparent 45%), /* turquesa */
+    linear-gradient(135deg, #0369a1, #0f766e 55%, #047857); /* azul → verde */
+}
+
+/* Tarjeta de vidrio: oscura y translúcida, con el fondo de color visible detrás */
+.login-card {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(8, 47, 73, 0.55) !important;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
+}
 </style>

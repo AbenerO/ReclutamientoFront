@@ -16,12 +16,8 @@ const kpis = ref({
   total_usuarios: 0,
   usuarios_activos: 0,
   total_roles: 0,
-  notificaciones_hoy: 0,
-  notificaciones_mes: 0,
-  notificaciones_fallidas_mes: 0,
 })
 const usuariosPorRol = ref<{ nombre: string; total: number }[]>([])
-const notificacionesPorCanal = ref<{ canal: string; total: number }[]>([])
 const ultimosUsuarios = ref<any[]>([])
 
 // ─── Carga de datos ──────────────────────────────────────────────────────────
@@ -31,7 +27,6 @@ onMounted(async () => {
     const data = respuesta.data
     kpis.value = data.kpis
     usuariosPorRol.value = data.usuarios_por_rol ?? []
-    notificacionesPorCanal.value = data.notificaciones_por_canal ?? []
     ultimosUsuarios.value = data.ultimos_usuarios ?? []
   }
   catch (e) {
@@ -47,9 +42,6 @@ const kpiCards = computed(() => [
   { titulo: 'Usuarios', valor: kpis.value.total_usuarios, icono: 'ri-group-line', color: 'primary' },
   { titulo: 'Usuarios activos', valor: kpis.value.usuarios_activos, icono: 'ri-user-follow-line', color: 'success' },
   { titulo: 'Roles', valor: kpis.value.total_roles, icono: 'ri-shield-user-line', color: 'info' },
-  { titulo: 'Notificaciones hoy', valor: kpis.value.notificaciones_hoy, icono: 'ri-notification-3-line', color: 'warning' },
-  { titulo: 'Notificaciones del mes', valor: kpis.value.notificaciones_mes, icono: 'ri-mail-send-line', color: 'secondary' },
-  { titulo: 'Fallidas del mes', valor: kpis.value.notificaciones_fallidas_mes, icono: 'ri-error-warning-line', color: 'error' },
 ])
 
 // ─── Gráfica: usuarios por rol ───────────────────────────────────────────────
@@ -67,9 +59,6 @@ const rolesOptions = computed(() => ({
   yaxis: { labels: { style: { colors: textColor.value } } },
   tooltip: { theme: isDark.value ? 'dark' : 'light' },
 }))
-
-const etiquetaCanal = (canal: string) => canal === 'whatsapp' ? 'WhatsApp' : canal === 'email' ? 'Correo' : canal
-const iconoCanal = (canal: string) => canal === 'whatsapp' ? 'ri-whatsapp-line' : 'ri-mail-line'
 </script>
 
 <template>
@@ -113,7 +102,7 @@ const iconoCanal = (canal: string) => canal === 'whatsapp' ? 'ri-whatsapp-line' 
 
     <VRow class="mb-4">
       <!-- ── Usuarios por rol ────────────────────────────────────────────── -->
-      <VCol cols="12" md="8">
+      <VCol cols="12" md="12">
         <VCard rounded="lg" height="100%">
           <VCardItem title="Usuarios por rol">
             <template #prepend>
@@ -130,37 +119,6 @@ const iconoCanal = (canal: string) => canal === 'whatsapp' ? 'ri-whatsapp-line' 
               Sin datos
             </div>
             <VueApexCharts v-else type="bar" height="260" :options="rolesOptions" :series="rolesSeries" />
-          </VCardText>
-        </VCard>
-      </VCol>
-
-      <!-- ── Notificaciones por canal ────────────────────────────────────── -->
-      <VCol cols="12" md="4">
-        <VCard rounded="lg" height="100%">
-          <VCardItem title="Notificaciones del mes">
-            <template #append>
-              <VBtn size="x-small" variant="tonal" color="primary" to="/configuracion/notificaciones">
-                Ver bitácora
-              </VBtn>
-            </template>
-          </VCardItem>
-          <VDivider />
-          <VList v-if="notificacionesPorCanal.length" density="comfortable">
-            <VListItem
-              v-for="item in notificacionesPorCanal"
-              :key="item.canal"
-              :prepend-icon="iconoCanal(item.canal)"
-              :title="etiquetaCanal(item.canal)"
-            >
-              <template #append>
-                <VChip size="small" color="primary" variant="tonal">
-                  {{ item.total }}
-                </VChip>
-              </template>
-            </VListItem>
-          </VList>
-          <VCardText v-else class="text-center text-medium-emphasis py-10">
-            {{ loading ? 'Cargando…' : 'Sin envíos este mes' }}
           </VCardText>
         </VCard>
       </VCol>
