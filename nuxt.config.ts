@@ -27,6 +27,11 @@ export default defineNuxtConfig({
     port: 3000,
   },
 
+  routeRules: {
+    '/api/**': { proxy: `${process.env.BACKEND_URL}/api/**` },
+    '/sanctum/**': { proxy: `${process.env.BACKEND_URL}/sanctum/**` },
+  },
+
   sanctum: {
     mode: 'cookie',
     baseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
