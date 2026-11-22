@@ -10,7 +10,7 @@ definePageMeta({
 const headers = [
   { key: 'nombre', title: 'Nombre', value: 'nombre' },
   { key: 'descripcion', title: 'Descripción', value: 'descripcion' },
-  { key: 'activo', title: 'Estado', value: 'activo' },
+  { key: 'activo', title: 'Estado', value: 'activo', exportValue: (i: any) => i.activo ? 'Activa' : 'Inactiva' },
   { key: 'Acciones', title: 'Acciones', value: 'Acciones' },
 ]
 </script>

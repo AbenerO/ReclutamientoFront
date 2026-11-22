@@ -15,11 +15,11 @@ const dataTableRef = ref(null)
 
 const headers = [
   { key: 'titulo', title: 'Título', value: 'titulo' },
-  { key: 'unidad', title: 'Unidad', value: 'unidad' },
-  { key: 'modalidad', title: 'Modalidad', value: 'modalidad' },
-  { key: 'salario', title: 'Rango Salarial', value: 'salario' },
+  { key: 'unidad', title: 'Unidad', value: 'unidad', exportValue: (i: any) => i.unidad?.nombre },
+  { key: 'modalidad', title: 'Modalidad', value: 'modalidad', exportValue: (i: any) => i.modalidad?.nombre },
+  { key: 'salario', title: 'Rango Salarial', value: 'salario', exportValue: (i: any) => `${formatearQuetzales(i.salario_minimo)} - ${formatearQuetzales(i.salario_maximo)}` },
   { key: 'ubicacion', title: 'Ubicación', value: 'ubicacion' },
-  { key: 'estado_vacante', title: 'Estado', value: 'estado_vacante' },
+  { key: 'estado_vacante', title: 'Estado', value: 'estado_vacante', exportValue: (i: any) => i.estado_vacante?.nombre },
   { key: 'Acciones', title: 'Acciones', value: 'Acciones' },
 ]
 

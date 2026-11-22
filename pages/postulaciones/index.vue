@@ -14,11 +14,11 @@ const { showToastSuccess, showToastError } = useToast()
 const dataTableRef = ref(null)
 
 const headers = [
-  { key: 'candidato', title: 'Candidato', value: 'candidato' },
-  { key: 'vacante', title: 'Vacante', value: 'vacante' },
-  { key: 'fecha_postulacion', title: 'Fecha de Postulación', value: 'fecha_postulacion' },
-  { key: 'fuente', title: 'Fuente', value: 'fuente' },
-  { key: 'estado', title: 'Estado', value: 'estado' },
+  { key: 'candidato', title: 'Candidato', value: 'candidato', exportValue: (i: any) => `${i.candidato?.primer_nombre ?? ''} ${i.candidato?.primer_apellido ?? ''}`.trim() },
+  { key: 'vacante', title: 'Vacante', value: 'vacante', exportValue: (i: any) => i.vacante?.titulo },
+  { key: 'fecha_postulacion', title: 'Fecha de Postulación', value: 'fecha_postulacion', exportValue: (i: any) => formatearFecha(i.fecha_postulacion) },
+  { key: 'fuente', title: 'Fuente', value: 'fuente', exportValue: (i: any) => i.fuente_reclutamiento?.nombre },
+  { key: 'estado', title: 'Estado', value: 'estado', exportValue: (i: any) => i.estado_postulacion?.nombre },
   { key: 'Acciones', title: 'Acciones', value: 'Acciones' },
 ]
 

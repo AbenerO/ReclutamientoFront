@@ -18,7 +18,7 @@ const headers = [
   { key: 'primer_apellido', title: 'Primer Apellido', value: 'primer_apellido' },
   { key: 'email', title: 'Correo', value: 'email' },
   { key: 'telefono', title: 'Teléfono', value: 'telefono' },
-  { key: 'fecha_nacimiento', title: 'Fecha de Nacimiento', value: 'fecha_nacimiento' },
+  { key: 'fecha_nacimiento', title: 'Fecha de Nacimiento', value: 'fecha_nacimiento', exportValue: (i: any) => formatearFecha(i.fecha_nacimiento) },
   { key: 'expectativa_salarial', title: 'Expectativa Salarial', value: 'expectativa_salarial' },
   { key: 'Acciones', title: 'Acciones', value: 'Acciones' },
 ]

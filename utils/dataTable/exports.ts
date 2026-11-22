@@ -137,12 +137,15 @@ export function exportarDataFormatoXLSX(data, filename = 'archivo.xlsx', headers
  */
 function filtrarDataExportable(data, headers) {
 
-  const columnasAExportar = headers.filter(header => header?.exportable === true || header?.exportable === undefined);
+  // La columna "Acciones" (botones) nunca se exporta
+  const columnasAExportar = headers.filter(header => header?.key !== 'Acciones' && (header?.exportable === true || header?.exportable === undefined));
 
   return data.map(item => {
     const newItem = {};
     columnasAExportar.forEach(columna => {
-      newItem[columna.key] = item[columna.key];
+      // Si la columna define "exportValue", se usa para obtener el texto (relaciones, formatos, etc.)
+      // El encabezado del archivo es el título de la columna
+      newItem[columna.title ?? columna.key] = columna.exportValue ? columna.exportValue(item) : item[columna.key];
     });
     return newItem;
   });

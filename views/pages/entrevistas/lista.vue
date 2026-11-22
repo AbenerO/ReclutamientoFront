@@ -20,10 +20,10 @@ const { showToastSuccess, showToastError } = useToast()
 const dataTableRef = ref(null)
 
 const headers = [
-  { key: 'fecha_hora', title: 'Fecha y hora', value: 'fecha_hora' },
-  { key: 'tipo', title: 'Tipo', value: 'tipo' },
-  { key: 'entrevistador', title: 'Entrevistador', value: 'entrevistador' },
-  { key: 'resultado', title: 'Resultado', value: 'resultado' },
+  { key: 'fecha_hora', title: 'Fecha y hora', value: 'fecha_hora', exportValue: (i: any) => formatearFechaHora(i.fecha_hora) },
+  { key: 'tipo', title: 'Tipo', value: 'tipo', exportValue: (i: any) => i.tipo_entrevista?.nombre },
+  { key: 'entrevistador', title: 'Entrevistador', value: 'entrevistador', exportValue: (i: any) => `${i.entrevistador?.primer_nombre ?? ''} ${i.entrevistador?.primer_apellido ?? ''}`.trim() },
+  { key: 'resultado', title: 'Resultado', value: 'resultado', exportValue: (i: any) => i.resultado_entrevista?.nombre },
   { key: 'observaciones', title: 'Observaciones', value: 'observaciones' },
   { key: 'Acciones', title: 'Acciones', value: 'Acciones' },
 ]
